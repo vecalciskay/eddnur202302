@@ -12,8 +12,15 @@ public class DibujoCuadrado implements IDibujador{
     }
 
     public void dibujar(Graphics g) {
+
         g.setColor(modelo.getColor());
         g.fillRect(modelo.getX(),modelo.getY(),
                 modelo.getTamano(), modelo.getTamano());
+
+        if (modelo.isSeleccionado()) {
+            g.setColor(Color.black);
+            g.drawRect(modelo.getX(),modelo.getY(),
+                    modelo.getTamano(), modelo.getTamano());
+        }
     }
 }
