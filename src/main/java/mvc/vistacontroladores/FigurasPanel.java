@@ -74,12 +74,19 @@ public class FigurasPanel extends JPanel
                 modelo.clickOffset(x, y);
             }
         } else {
-            modelo.setPosicionFinal(x, y);
-            Thread t = new Thread(() -> {
-                modelo.animacion(30, 5000);
-            });
-            t.start();
+
+            if (!modelo.isEnMovimiento() && !modelo.isPressedOnly()) {
+                modelo.setPosicionFinal(x, y);
+                Thread t = new Thread(() -> {
+                    modelo.animacion(30, 5000);
+                    modelo.setSeleccionado(false);
+                    modelo.setEnMovimiento(false);
+                });
+                t.start();
+            }
         }
+
+        modelo.setPressedOnly(false);
     }
 
     /**
@@ -93,9 +100,12 @@ public class FigurasPanel extends JPanel
         int x = e.getX();
         int y = e.getY();
 
-        if ( modelo.posicionDentroDelCuadrado(x,y)) {
-            modelo.setSeleccionado(true);
-            modelo.clickOffset(x,y);
+        if (!modelo.isSeleccionado()) {
+            if (modelo.posicionDentroDelCuadrado(x, y)) {
+                modelo.setSeleccionado(true);
+                modelo.clickOffset(x, y);
+                modelo.setPressedOnly(true);
+            }
         }
     }
 
@@ -105,7 +115,7 @@ public class FigurasPanel extends JPanel
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        //modelo.setSeleccionado(false);
+        modelo.setEnMovimiento(false);
     }
 
     @Override
@@ -129,6 +139,7 @@ public class FigurasPanel extends JPanel
         int y = e.getY();
         if (modelo.isSeleccionado()) {
             modelo.mover(x, y);
+            modelo.setEnMovimiento(true);
         }
     }
 

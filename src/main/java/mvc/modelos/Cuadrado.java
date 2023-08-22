@@ -14,6 +14,8 @@ public class Cuadrado {
     private int offsetX;
     private int offsetY;
     private boolean seleccionado;
+    private boolean enMovimiento;
+    private boolean pressedOnly;
     private PropertyChangeSupport observado;
     private int finalX;
     private int finalY;
@@ -80,6 +82,22 @@ public class Cuadrado {
 
     public void setSeleccionado(boolean seleccionado) {
         this.seleccionado = seleccionado;
+    }
+
+    public boolean isEnMovimiento() {
+        return enMovimiento;
+    }
+
+    public void setEnMovimiento(boolean enMovimiento) {
+        this.enMovimiento = enMovimiento;
+    }
+
+    public boolean isPressedOnly() {
+        return pressedOnly;
+    }
+
+    public void setPressedOnly(boolean pressedOnly) {
+        this.pressedOnly = pressedOnly;
     }
 
     public void addObserver(PropertyChangeListener observador) {
