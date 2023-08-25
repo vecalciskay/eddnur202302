@@ -35,6 +35,10 @@ public class Torre {
         anillos.push(a);
     }
 
+    public Stack<Anillo> getAnillos() {
+        return anillos;
+    }
+
     @Override
     public String toString() {
         StringBuilder resultado = new StringBuilder();
