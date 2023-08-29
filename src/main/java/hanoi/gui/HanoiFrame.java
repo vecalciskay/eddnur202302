@@ -17,7 +17,7 @@ public class HanoiFrame extends JFrame {
 
         this.getContentPane().setLayout(new BorderLayout());
 
-        modelo = new Hanoi(3);
+        modelo = new Hanoi(4);
         HanoiPanel panel = new HanoiPanel(modelo);
         modelo.addObserver(panel);
 
@@ -35,7 +35,17 @@ public class HanoiFrame extends JFrame {
 
     private void btnResolver_clicked() {
         logger.info("Hizo clic en resolver");
-        modelo.resolver(0,2,1,3);
+        Thread t = new Thread(new Runnable() {
+           public void run() {
+               try {
+                   modelo.resolver(0,2,1,4);
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+        });
+
+        t.start();
     }
 
     public static void main(String[] args) {

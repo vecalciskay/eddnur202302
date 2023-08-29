@@ -36,9 +36,10 @@ public class Hanoi {
         observado.firePropertyChange("HANOI", true, false);
     }
 
-    public void resolver(int de, int a, int pp, int n) {
+    public void resolver(int de, int a, int pp, int n) throws InterruptedException {
         if (n == 1) {
             mover(de, a);
+            Thread.sleep(500);
             return;
         }
         resolver(de, pp,  a,  n-1);
