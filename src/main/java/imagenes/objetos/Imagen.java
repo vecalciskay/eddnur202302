@@ -76,4 +76,49 @@ public class Imagen implements IDibujador {
 
         observado.firePropertyChange("IMAGEN",true, false);
     }
+
+    public void aplicarMatriz(MatrizTransformacion m) {
+        int[][] nuevosPixeles = new int[ancho][alto];
+
+        for (int i = 0; i < ancho; i++) {
+            for (int j = 0; j < alto; j++) {
+                Vector2 entrada = new Vector2(i,j);
+                Vector2 salida = m.aplicarMatriz(entrada);
+                if ((int)salida.getX() >= 0 &&
+                        (int)salida.getX() < ancho &&
+                        (int)salida.getY() >= 0 &&
+                        (int)salida.getY() < alto) {
+                    nuevosPixeles[(int)salida.getX()][(int)salida.getY()] =
+                            pixeles[i][j];
+                }
+            }
+        }
+        pixeles = nuevosPixeles;
+        observado.firePropertyChange("IMAGEN",true, false);
+    }
+
+    public int getAlto() {
+        return alto;
+    }
+
+    public int getAncho() {
+        return ancho;
+    }
+
+    public int[][] getPixeles() {
+        return pixeles;
+    }
+
+    public void punto(int x, int y, int tamano) {
+
+        for (int i = x - tamano/2; i < x + tamano / 2; i++) {
+            for (int j = y - tamano/2; j < y + tamano/2; j++) {
+                if (i >= 0 && i < ancho &&
+                j >= 0 && j < alto) {
+                    pixeles[i][j] = 0;
+                }
+            }
+        }
+        observado.firePropertyChange("IMAGEN",true, false);
+    }
 }

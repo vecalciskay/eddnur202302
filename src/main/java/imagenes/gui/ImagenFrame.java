@@ -1,5 +1,6 @@
 package imagenes.gui;
 import imagenes.objetos.Imagen;
+import imagenes.objetos.MatrizTransformacion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +12,9 @@ public class ImagenFrame extends JFrame {
 
         this.getContentPane().setLayout(new BorderLayout());
 
-        modelo = new Imagen(600,400);
+        modelo = new Imagen(400,400);
         modelo.imagen4x4();
+
         ImagenPanel panel = new ImagenPanel(modelo);
         modelo.addObserver(panel);
         this.getContentPane().add(panel, BorderLayout.CENTER);
@@ -25,8 +27,22 @@ public class ImagenFrame extends JFrame {
 
         this.getContentPane().add(btn, BorderLayout.SOUTH);
 
+        btn = new JButton("Matriz de Transformacion");
+        btn.addActionListener(e -> {
+            btnTransformacion_clicked();
+        });
+
+        this.getContentPane().add(btn, BorderLayout.NORTH);
+
         this.setVisible(true);
         this.pack();
+    }
+
+    private void btnTransformacion_clicked() {
+        MatrizTransformacion m = new MatrizTransformacion();
+        m.traslacion(modelo.getAncho(),0);
+        m.rotacion(-90);
+        modelo.aplicarMatriz(m);
     }
 
     private void btnAchicar_clicked() {
