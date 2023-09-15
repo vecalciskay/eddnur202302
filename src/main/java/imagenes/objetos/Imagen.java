@@ -121,4 +121,39 @@ public class Imagen implements IDibujador {
         }
         observado.firePropertyChange("IMAGEN",true, false);
     }
+
+    public void linea(int x1, int y1, int x2, int y2) {
+        /**
+         * int step;
+         *         if (x1 > x2) {
+         *             step = -1;
+         *         } else {
+         *             step = 1;
+         *         }
+         */
+
+        // ---- Si son lineas horizontales
+        if (Math.abs(x2 - x1) > Math.abs(y2 - y1)) {
+            int stepX = (x1 > x2 ? -1 : 1);
+            int stepY = (y1 > y2 ? -1 : 1);
+            double ratio = (double)Math.abs(y2 - y1) / (double)Math.abs(x2 - x1);
+            int x = 0;
+            for (int i = x1; i != x2; i += stepX) {
+
+                pixeles[i][y1 + stepY * (int)(x * ratio)] = 0;
+                x++;
+            }
+        }
+        if (Math.abs(x2 - x1) <= Math.abs(y2 - y1)) {
+            int stepX = (x1 > x2 ? -1 : 1);
+            int stepY = (y1 > y2 ? -1 : 1);
+            double ratio = (double)Math.abs(x2 - x1) / (double)Math.abs(y2 - y1);
+            int y = 0;
+            for (int j = y1; j != y2; j += stepY) {
+                pixeles[x1 + stepX * (int)(y * ratio)][j] = 0;
+                y++;
+            }
+        }
+        observado.firePropertyChange("IMAGEN",true, false);
+    }
 }
