@@ -27,8 +27,14 @@ public class TestListaGenerica {
             System.out.println(n);
         }
 
+        // Correcto
         for(String s : b) {
             System.out.println(s);
+        }
+
+        // Estupidez
+        for (int j = 0; j < b.tamano(); j++) {
+            System.out.println(b.obtener(j));
         }
     }
 }

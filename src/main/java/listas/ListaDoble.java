@@ -2,12 +2,22 @@ package listas;
 
 import java.util.Iterator;
 
-public class ListaGenerica<E> implements Iterable<E> {
+public class ListaDoble<E> implements Iterable<E> {
     private Nodo<E> raiz;
+    private Nodo<E> cola;
     private int tamano;
 
-    public ListaGenerica() {
+    public ListaDoble() {
         raiz = null;
+        cola = null;
+    }
+
+    public Nodo<E> getCola() {
+        return cola;
+    }
+
+    public void setCola(Nodo<E> cola) {
+        this.cola = cola;
     }
 
     public Nodo<E> getRaiz() {
@@ -21,7 +31,13 @@ public class ListaGenerica<E> implements Iterable<E> {
     public void insertar(E o) {
         Nodo<E> nuevo = new Nodo<>(o);
         nuevo.setSiguiente(raiz);
+        if (raiz != null) {
+            raiz.setAnterior(nuevo);
+        }
         raiz = nuevo;
+        if (cola == null) {
+            cola = raiz;
+        }
         tamano++;
     }
 
@@ -38,17 +54,11 @@ public class ListaGenerica<E> implements Iterable<E> {
 
     public void adicionar(E o) {
         Nodo<E> nuevo = new Nodo<>(o);
-        if (tamano == 0){
-            insertar(o);
-            return;
+        nuevo.setAnterior(cola);
+        if (cola != null) {
+            cola.setSiguiente(nuevo);
         }
-
-        Nodo<E> actual = raiz;
-        while(actual.getSiguiente() != null) {
-            actual = actual.getSiguiente() ;
-
-        }
-        actual.setSiguiente(nuevo);
+        cola = nuevo;
         tamano++;
     }
 
@@ -83,6 +93,16 @@ public class ListaGenerica<E> implements Iterable<E> {
         return resultado.toString();
     }
 
+    public String toStringReversa() {
+        StringBuilder resultado = new StringBuilder();
+        Nodo<E> actual = cola;
+        while(actual != null) {
+            resultado.append(actual);
+            actual = actual.getAnterior();
+        }
+        return resultado.toString();
+    }
+
     public int tamano(){
 
         return tamano;
@@ -97,12 +117,12 @@ public class ListaGenerica<E> implements Iterable<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new IteradorListaGenerica<>(raiz);
+        return new IteradorListaDoble<>(raiz);
     }
 
-    class IteradorListaGenerica<E> implements Iterator<E> {
+    class IteradorListaDoble<E> implements Iterator<E> {
         private Nodo<E> actual;
-        public IteradorListaGenerica(Nodo<E> inicio) {
+        public IteradorListaDoble(Nodo<E> inicio) {
             actual = inicio;
         }
 
@@ -122,6 +142,7 @@ public class ListaGenerica<E> implements Iterable<E> {
     static class Nodo<E> {
         private E contenido;
         private Nodo<E> siguiente;
+        private Nodo<E> anterior;
 
         public Nodo(E c) {
             contenido = c;
@@ -133,6 +154,14 @@ public class ListaGenerica<E> implements Iterable<E> {
 
         public void setSiguiente(Nodo<E> siguiente) {
             this.siguiente = siguiente;
+        }
+
+        public Nodo<E> getAnterior() {
+            return anterior;
+        }
+
+        public void setAnterior(Nodo<E> anterior) {
+            this.anterior = anterior;
         }
 
         public E getContenido() {
