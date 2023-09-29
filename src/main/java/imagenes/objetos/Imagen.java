@@ -2,9 +2,14 @@ package imagenes.objetos;
 
 import mvc.vistacontroladores.IDibujador;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class Imagen implements IDibujador {
     private int alto;
@@ -155,5 +160,43 @@ public class Imagen implements IDibujador {
             }
         }
         observado.firePropertyChange("IMAGEN",true, false);
+    }
+
+    public byte[] getBytesPng() {
+        BufferedImage bi = new BufferedImage(ancho, alto, BufferedImage.TYPE_INT_RGB);
+        WritableRaster raster = bi.getRaster();
+
+        byte[] imageBytes = null;
+        int[] rasterPixels = transformarPuntos();
+        raster.setPixels(0, 0, ancho, alto, rasterPixels);
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", baos);
+            imageBytes = baos.toByteArray();
+            baos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return imageBytes;
+    }
+
+    private int[] transformarPuntos() {
+        int[] r = new int[3*ancho*alto];
+
+        for (int i = 0; i < ancho; i++) {
+            for (int j = 0; j < alto; j++) {
+                int red = (pixeles[i][j] & 0x00ff0000) >> 16;
+                int green = (pixeles[i][j] & 0x0000ff00) >> 8;
+                int blue = pixeles[i][j] & 0x000000ff;
+
+                r[3*(j * ancho + i)] = red;
+                r[3*(j * ancho + i)+1] = green;
+                r[3*(j * ancho + i)+2] = blue;
+            }
+        }
+
+        return r;
     }
 }
