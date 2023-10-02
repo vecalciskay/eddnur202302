@@ -1,11 +1,21 @@
 package redes.servidorweb;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Este servidor responde a las siguientes consultas de parte del navegador:
+ * /tabla
+ * /imagen
+ * /otro : retornará con error cualquier otra cosa
+ */
 public class ServidorWebSimple {
     private final int puerto;
+    private final Logger logger = LogManager.getRootLogger();
 
     public ServidorWebSimple(int puerto) {
         this.puerto = puerto;
@@ -26,7 +36,7 @@ public class ServidorWebSimple {
         ServerSocket socketServer = null;
         try {
             socketServer = new ServerSocket(puerto);
-            System.out.println("Servidor iniciado en el puerto " + puerto);
+            logger.info("Servidor iniciado en el puerto " + puerto);
             while (true) {
                 // Se espera una conexion
                 Socket clt = socketServer.accept();
@@ -36,7 +46,7 @@ public class ServidorWebSimple {
                 procesadorPeticion.procesarPeticion();
             }
         } catch (Exception e) {
-            System.out.println("Error en el servidor: " + e.getMessage());
+            logger.error("Error en el servidor: " + e.getMessage());
             try {
                 socketServer.close();
             } catch (IOException ex) {
