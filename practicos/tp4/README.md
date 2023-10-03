@@ -43,6 +43,25 @@ Limpia la sesión id.
 * GET /s{id}/imagen
 Devuelve un PNG con la imagen de la sesión id.
 
+## Sesion tipica
+En su navegador colocar las siguientes
+direcciones una tras otra
+
+* http://localhost:8080/sesiones
+* http://localhost:8080/s5 : esto muestra
+un html con el titulo 5 y los comandos
+linea, circulo, rectangulo que se podrian hacer
+* http://localhost:8080/s5/linea/0/50/200/300 : esto
+solamente muestra un html indicando que la
+linea se adiciono a la lista de comandos
+de la sesion 5.
+* http://localhost:8080/s5/imagen : esto
+hace que el servidor dibuje todos los comandos
+de la sesion 5 en un Graphics, grabe el
+archivo (o no) y devuelva el archivo
+por la conexion.
+
+
 ## Obligatorios
 
 * El práctico debe implementar Observer.

@@ -29,6 +29,6 @@ public class DibujoFrame extends JFrame {
     }
 
     private void guardar() {
-        dibujoPanel.guardarArchivo("e:/temp/dibujo001.png");
+        dibujoPanel.guardarArchivo("e:/Vladimir/dibujo001.png");
     }
 }

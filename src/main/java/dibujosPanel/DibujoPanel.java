@@ -38,6 +38,13 @@ public class DibujoPanel extends JPanel {
 
         dibujarAlgo(g);
 
+        /*
+        BufferedImage bi = ImageIO.read(new File("c:\\image\\mypic.jpg"));
+  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+  ImageIO.write(bi, "jpg", baos);
+  byte[] bytes = baos.toByteArray();
+         */
+
         try {
             File f = new File(archivo);
             ImageIO.write(bi, "png", f);

@@ -15,6 +15,7 @@ public class ComandoTabla extends ComandoServidorWeb {
                 filaJose + filaCarlos +
                 filaJose + filaCarlos +
                 "</table>" +
+                "<br /><img src='/imagen' />" +
                 "</body></html>";
     }
 

@@ -3,9 +3,9 @@ package listas;
 import java.util.Iterator;
 
 public class ListaDoble<E> implements Iterable<E> {
-    private Nodo<E> raiz;
-    private Nodo<E> cola;
-    private int tamano;
+    protected Nodo<E> raiz;
+    protected Nodo<E> cola;
+    protected int tamano;
 
     public ListaDoble() {
         raiz = null;
@@ -62,14 +62,29 @@ public class ListaDoble<E> implements Iterable<E> {
         tamano++;
     }
 
-    public void eliminar (int posicion){
+    /**
+     *
+     * @param posicion
+     * @return Devuelve el contenido del nodo que se elimina
+     */
+    public E eliminar (int posicion){
+        E obj;
         if (posicion>(tamano-1)){
             throw new IllegalArgumentException("la posicion esa fuera de la lista");
         }
         if (posicion==0){
+            obj = raiz.getContenido();
             raiz=raiz.getSiguiente();
+            raiz.setAnterior(null);
             tamano--;
-            return;
+            return obj;
+        }
+        if (posicion==(tamano - 1)){
+            obj = cola.getContenido();
+            cola=cola.getAnterior();
+            cola.setSiguiente(null);
+            tamano--;
+            return obj;
         }
         int resultado = 0;
         Nodo<E> actual = raiz;
@@ -77,8 +92,12 @@ public class ListaDoble<E> implements Iterable<E> {
             actual = actual.getSiguiente();
             resultado++;
         }
+        obj = actual.getSiguiente().getContenido();
         actual.setSiguiente(actual.getSiguiente().getSiguiente());
+        actual.getSiguiente().setAnterior(actual);
         tamano--;
+
+        return obj;
     }
 
 
