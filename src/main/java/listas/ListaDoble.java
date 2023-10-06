@@ -100,6 +100,16 @@ public class ListaDoble<E> implements Iterable<E> {
         return obj;
     }
 
+    public E buscar(E o) {
+        for (E item:
+             this) {
+            if (item.equals(o)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public String toString() {
