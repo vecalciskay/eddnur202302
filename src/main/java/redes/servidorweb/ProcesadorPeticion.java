@@ -2,6 +2,8 @@ package redes.servidorweb;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import redes.servidorweb.sesiones.ListaDeSesiones;
+import redes.servidorweb.sesiones.Sesion;
 
 import java.io.*;
 import java.net.Socket;
@@ -56,7 +58,7 @@ public class ProcesadorPeticion {
                 logger.info("<--- {}", otrasLineas);
             }
             logger.info("Del cliente se leyó la linea del protocolo Http: {}", line);
-            String regexGet = "^GET\\s(.+)\\s(.+)$";
+            String regexGet = "^GET\\s\\/([a-z0-9]+)\\/([a-z0-9-]+).+$";
             Pattern pattern = Pattern.compile(regexGet);
             Matcher matcher = pattern.matcher(line);
 
@@ -65,8 +67,28 @@ public class ProcesadorPeticion {
                 return;
             }
             String cmdGet = matcher.group(1);
-            ComandoServidorWeb cmd = BuilderComandoServidorWeb.crear(cmdGet);
-            cmd.ejecutar();
+            String cmdArgumentos = matcher.group(2);
+
+            ComandoServidorWeb cmd = null;
+            if (cmdGet.startsWith("s")) {
+                String idsesion = cmdGet;
+                Sesion buscarSesionId = new Sesion(idsesion);
+                ListaDeSesiones sesiones = ListaDeSesiones.obtenerInstancia();
+                Sesion objSesion = sesiones.getSesiones().buscar(buscarSesionId);
+                if (objSesion == null) {
+                    objSesion = sesiones.crearSesion(idsesion);
+                }
+
+                cmd = BuilderComandoServidorWeb.crear(objSesion, cmdArgumentos);
+                cmd.ejecutar();
+
+                objSesion.insertarComando(cmd);
+            }
+            else {
+                cmd = BuilderComandoServidorWeb.crear(cmdGet);
+                cmd.ejecutar();
+            }
+
 
             if (cmd.esResultadoTexto()) {
                 enviarTexto(cmd.getResultadoTexto(), bufOut);
