@@ -11,7 +11,13 @@ public class ArbolAritmetico {
     public String toString() {
         if (raiz == null)
             return "[VACIO]";
-        return raiz.toString();
+        return raiz.toString() + " = " + raiz.calcular();
+    }
+
+    public double calcular() {
+        if (raiz == null)
+            return 0;
+        return raiz.calcular();
     }
 
     class Nodo {
@@ -110,6 +116,16 @@ public class ArbolAritmetico {
 
         public ObjetoAritmetico getContenido() {
             return contenido;
+        }
+
+        public double calcular() {
+            if (contenido instanceof Numero) {
+                return ((Numero) contenido).getValor();
+            }
+
+            double a = izquierda.calcular();
+            double b = derecha.calcular();
+            return ((Operacion) contenido).ejecutar(a, b);
         }
 
         @Override

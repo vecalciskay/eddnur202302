@@ -5,5 +5,6 @@ public class TestArbolAritmetico {
         ArbolAritmetico a = new ArbolAritmetico("(5+7) * (5 - (4 / 2))");
 
         System.out.println(a);
+
     }
 }

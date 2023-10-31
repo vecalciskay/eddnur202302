@@ -18,13 +18,13 @@ public class Operacion extends ObjetoAritmetico {
         }
     }
 
-    public Numero ejecutar(Numero a, Numero b) {
+    public double ejecutar(double a, double b) {
         switch(operacion) {
-            case Suma -> {return new Numero(a.getValor() + b.getValor());}
-            case Resta -> {return new Numero(a.getValor() - b.getValor());}
-            case Multiplicacion -> {return new Numero(a.getValor() * b.getValor());}
-            case Division -> {return new Numero(a.getValor() / b.getValor());}
-            default -> {return new Numero(0);}
+            case Suma -> {return a + b;}
+            case Resta -> {return a - b;}
+            case Multiplicacion -> {return a * b;}
+            case Division -> {return a / b;}
+            default -> {return 0;}
         }
     }
 }
