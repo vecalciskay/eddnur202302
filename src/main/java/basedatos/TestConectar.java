@@ -18,10 +18,10 @@ public class TestConectar {
         Connection conn = null;
         try {
             String server = "localhost";
-            int port = 0;
-            String database = "empresa";
+            int port = 6603;
+            String database = "edd";
             String user  = "root";
-            String password = "root";
+            String password = "krane345";
 
             String stringDeConexion = "jdbc:mysql://" + server;
             if (port != 0) {
@@ -40,24 +40,23 @@ public class TestConectar {
             System.exit(0);
         }
 
-        String query = "SELECT * FROM empleados";
+        String query = "SELECT * FROM personas";
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             System.out.println("Paso 3. Consulta ejecutada");
             while (rs.next()) {
-                Integer ci_id = rs.getInt("ci_id");
-                String nombre = rs.getString("snombre");
-                String apellido = rs.getString("sappaterno");
-                Double salario = rs.getDouble("nsalario");
+                Integer ci_id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                Double salario = rs.getDouble("altura");
                 /*System.out.println("ciId:" + ci_id);
                 System.out.println("nombre:" + nombre);
                 System.out.println("apellido:" + apellido);
                 System.out.println("salario:" + salario);
                 System.out.println("");*/
 
-                Empleado emp = new Empleado(ci_id, nombre, apellido, salario);
+                Empleado emp = new Empleado(ci_id, nombre, "", salario);
                 System.out.println(emp);
             }
             rs.close();
