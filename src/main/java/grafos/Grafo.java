@@ -3,32 +3,27 @@ package grafos;
 import java.util.HashMap;
 
 public class Grafo<E> {
-
     private HashMap<String,Nodo<E>> nodos;
 
     public Grafo() {
         nodos = new HashMap<>();
     }
 
-    public void agregarNodo(String id, E contenido) {
-        Nodo<E> nodo = new Nodo<>(id, contenido);
-        nodos.put(id, nodo);
+    public void agregarNodo(String id,E contenido) {
+        Nodo<E> nodo = new Nodo<>(id,contenido);
+        nodos.put(id,nodo);
     }
 
-    public void agregarArista(String idOrigen, String idDestino) {
-        Nodo<E> origen = nodos.get(idOrigen);
-        Nodo<E> destino = nodos.get(idDestino);
-        origen.salientes.put(idDestino, destino);
-        destino.entrantes.put(idOrigen, origen);
+    public Nodo obtenerNodo(String id){
+        return nodos.get(id);
     }
-
-    @Override
-    public String toString() {
+    // A B C D
+    public String imprimir(){
         String s = "";
-        for (String id : nodos.keySet()) {
+        for (String id: nodos.keySet()){
             Nodo<E> nodo = nodos.get(id);
-            s += nodo.id + " -> ";
-            for (String idSaliente : nodo.salientes.keySet()) {
+            s += id + " ->";
+            for (String idSaliente : nodo.salientes.keySet()){
                 s += idSaliente + ", ";
             }
             s += "\n";
@@ -36,33 +31,41 @@ public class Grafo<E> {
         return s;
     }
 
+    public void agregarRelacion(String idNodoOrigen, String idNodoDestino){
+        Nodo<E> origen =  nodos.get(idNodoOrigen); // A
+        Nodo<E> destino =  nodos.get(idNodoDestino); // B
+        origen.salientes.put(idNodoDestino,destino); // A -> B
+    }
+
     class Nodo<E> {
-        private HashMap<String,Nodo<E>> entrantes;
-        private HashMap<String,Nodo<E>> salientes;
-        private E contenido;
         private String id;
-
-        public Nodo(String id, E contenido) {
-            entrantes = new HashMap<>();
-            salientes = new HashMap<>();
-            this.id = id;
-            this.contenido = contenido;
-        }
-
-        public HashMap<String, Nodo<E>> getEntrantes() {
-            return entrantes;
-        }
+        private E contenido;
 
         public HashMap<String, Nodo<E>> getSalientes() {
             return salientes;
         }
 
-        public E getContenido() {
-            return contenido;
-        }
+        private HashMap<String,Nodo<E>> salientes;
 
-        public String getId() {
-            return id;
+        public Nodo(String id,E contenido){
+            salientes = new HashMap<>();
+            this.id = id;
+            this.contenido = contenido;
         }
+    }
+    public static void main(String[] arg){
+        Grafo grafo= new Grafo();
+        grafo.agregarNodo("A","A");
+        grafo.agregarNodo("B","B");
+        grafo.agregarNodo("C","C");
+        grafo.agregarNodo("D","D");
+        grafo.agregarNodo("E","E");
+
+        grafo.agregarRelacion("A","B");
+        grafo.agregarRelacion("A","C");
+        grafo.agregarRelacion("B","D");
+        grafo.agregarRelacion("C","D");
+
+        System.out.println(grafo.imprimir());
     }
 }
