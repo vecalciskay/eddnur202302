@@ -1,8 +1,14 @@
 package grafos;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Grafo<E> {
+
+    public HashMap<String, Nodo<E>> getNodos() {
+        return nodos;
+    }
 
     private HashMap<String,Nodo<E>> nodos;
 
@@ -14,12 +20,19 @@ public class Grafo<E> {
         Nodo<E> nodo = new Nodo<>(id, contenido);
         nodos.put(id, nodo);
     }
-
-    public void agregarArista(String idOrigen, String idDestino) {
+    public Nodo obtenerNodo(String id) {
+        return nodos.get(id);
+    }
+    public Integer getTotalNodos() {
+        return nodos.size();
+    }
+    public void agregarArista(String idOrigen, String idDestino, int peso) {
         Nodo<E> origen = nodos.get(idOrigen);
         Nodo<E> destino = nodos.get(idDestino);
-        origen.salientes.put(idDestino, destino);
-        destino.entrantes.put(idOrigen, origen);
+        Arista arista = new Arista(origen,destino,peso);
+        Arista aristaViseversa = new Arista(destino,origen,peso);
+        origen.salientes.add(arista);
+        destino.salientes.add(aristaViseversa);
     }
 
     @Override
@@ -28,8 +41,8 @@ public class Grafo<E> {
         for (String id : nodos.keySet()) {
             Nodo<E> nodo = nodos.get(id);
             s += nodo.id + " -> ";
-            for (String idSaliente : nodo.salientes.keySet()) {
-                s += idSaliente + ", ";
+            for (Arista idSaliente : nodo.salientes) {
+                s += idSaliente.hacia.id + "(" + idSaliente.peso + "), ";
             }
             s += "\n";
         }
@@ -37,24 +50,18 @@ public class Grafo<E> {
     }
 
     class Nodo<E> {
-        private HashMap<String,Nodo<E>> entrantes;
-        private HashMap<String,Nodo<E>> salientes;
+        public List<Arista<E>> getSalientes() {
+            return salientes;
+        }
+
+        private List<Arista<E>> salientes;
         private E contenido;
         private String id;
 
         public Nodo(String id, E contenido) {
-            entrantes = new HashMap<>();
-            salientes = new HashMap<>();
+            salientes = new ArrayList<>();
             this.id = id;
             this.contenido = contenido;
-        }
-
-        public HashMap<String, Nodo<E>> getEntrantes() {
-            return entrantes;
-        }
-
-        public HashMap<String, Nodo<E>> getSalientes() {
-            return salientes;
         }
 
         public E getContenido() {
@@ -63,6 +70,42 @@ public class Grafo<E> {
 
         public String getId() {
             return id;
+        }
+
+    }
+    class Arista<E> {
+        private Nodo<E> desde;
+        private Nodo<E> hacia;
+        private int peso;
+
+        public Arista(Nodo<E> desde, Nodo<E> hacia, int peso) {
+            this.desde = desde;
+            this.hacia = hacia;
+            this.peso = peso;
+        }
+
+        public Nodo<E> getDesde() {
+            return desde;
+        }
+
+        public Nodo<E> getHacia() {
+            return hacia;
+        }
+
+        public int getPeso() {
+            return peso;
+        }
+
+        public void setDesde(Nodo<E> desde) {
+            this.desde = desde;
+        }
+
+        public void setHacia(Nodo<E> hacia) {
+            this.hacia = hacia;
+        }
+
+        public void setPeso(int peso) {
+            this.peso = peso;
         }
     }
 }
